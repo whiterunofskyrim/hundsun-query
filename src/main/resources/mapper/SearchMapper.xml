@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.businessearch.Mapper.SearchMapper">
+    <select id="findAll" resultType="com.example.businessearch.pojo.PurchaseResult">
+        select p.purchase_id,
+               p.client_id,
+               p.bank_account,
+               p.fund_code,
+               p.purchase_date,
+               p.purchase_count,
+               p.purchase_share,
+               p.purchase_status,
+               c.client_name,
+               f.fund_name
+        from purchase p,
+             client c,
+             fund f
+        where p.fund_code like #{fundCode}
+          and p.client_id like #{clientId}
+          and c.client_id = p.client_id
+          and f.fund_code = p.fund_code
+            limit #{pageNum}
+            , #{pageSize}
+    </select>
+
+    <select id="findAllRedem" resultType="com.example.businessearch.pojo.RedemResult">
+        select r.redem_id,
+               r.client_id,
+               r.bank_account,
+               r.fund_code,
+               r.redem_date,
+               r.redem_count,
+               r.redem_share,
+               r.redem_status,
+               r.redem_current_share,
+               r.redem_estimated_date,
+               c.client_name,
+               f.fund_name
+        from redem r,
+             client c,
+             fund f
+        where r.fund_code like #{fundCode}
+          and r.client_id like #{clientId}
+          and c.client_id = r.client_id
+          and f.fund_code = r.fund_code
+            limit #{pageNum}
+            , #{pageSize}
+    </select>
+
+    <select id="selectTotal" resultType="Integer">
+        select count(*)
+        from purchase p,
+             client c,
+             fund f
+        where p.fund_code like #{fundCode}
+          and p.client_id like #{clientId}
+          and c.client_id = p.client_id
+          and f.fund_code = p.fund_code
+            limit #{pageNum}
+            , #{pageSize}
+    </select>
+
+    <select id="selectTotalRedem" resultType="Integer">
+        select count(*)
+        from redem r,
+             client c,
+             fund f
+        where r.fund_code like #{fundCode}
+          and r.client_id like #{clientId}
+          and c.client_id = r.client_id
+          and f.fund_code = r.fund_code
+            limit #{pageNum}
+            , #{pageSize}
+    </select>
+
+    <select id="findAllBank" resultType="com.example.businessearch.pojo.Bank">
+        select b.bank_account, b.client_id, b.card_balance, j.bank_jour_id, j.bank_change
+        from bank b,
+             bank_jour j
+        where b.bank_account like #{bankAccount}
+          and j.bank_jour_id like #{serialNumber}
+          and b.bank_account = j.bank_account limit #{pageNum}
+            , #{pageSize}
+    </select>
+
+    <select id="selectTotalBank" resultType="Integer">
+        select count(*)
+        from bank b,
+             bank_jour j
+        where b.bank_account like #{bankAccount}
+          and j.bank_jour_id like #{serialNumber}
+          and b.bank_account = j.bank_account limit #{pageNum}
+            , #{pageSize}
+    </select>
+
+    <select id="findPurchase" resultType="com.example.businessearch.pojo.PurchaseResult">
+        select p.purchase_id,
+               p.client_id,
+               p.bank_account,
+               p.fund_code,
+               p.purchase_date,
+               p.purchase_count,
+               p.purchase_share,
+               p.purchase_status,
+               c.client_name,
+               f.fund_name
+        from purchase p,
+             client c,
+             fund f
+        where p.fund_code = #{fundCode}
+          and p.client_id = #{clientId}
+          and c.client_id = p.client_id
+          and f.fund_code = p.fund_code
+
+    </select>
+
+    <delete id="deletePurchase">
+        delete
+        from purchase p
+        where p.fund_code = #{fundCode}
+          and p.client_id = #{clientId}
+    </delete>
+
+    <select id="findRedem" resultType="com.example.businessearch.pojo.RedemResult">
+        select r.redem_id,
+               r.client_id,
+               r.bank_account,
+               r.fund_code,
+               r.redem_date,
+               r.redem_count,
+               r.redem_share,
+               r.redem_status,
+               r.redem_current_share,
+               r.redem_estimated_date,
+               c.client_name,
+               f.fund_name
+        from redem r,
+             client c,
+             fund f
+        where r.fund_code = #{fundCode}
+          and r.client_id = #{clientId}
+          and c.client_id = r.client_id
+          and f.fund_code = r.fund_code
+
+    </select>
+
+    <delete id="deleteRedem">
+        delete
+        from redem r
+        where r.fund_code = #{fundCode}
+          and r.client_id = #{clientId}
+    </delete>
+</mapper>
