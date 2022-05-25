@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,33 +68,51 @@ public class HelloService {
         return res;
     }
 
-    public JSONObject deletePurchase(@RequestParam String fundCode,
-                                     @RequestParam String clientId) {
-        PurchaseResult purchaseResult = searchMapper.findPurchase(fundCode, clientId);
+    public JSONObject deletePurchase(@RequestParam String serial) {
         JSONObject jsonObject = new JSONObject();
-
-        if (purchaseResult.getPurchaseStatus().equals("申请中")) {
-            searchMapper.deletePurchase(fundCode, clientId);
-            jsonObject.put("status", "success");
+        Integer integer = searchMapper.deletePurchase(serial);
+        if (integer == 1) {
+            jsonObject.put("res", "success");
         } else {
-            jsonObject.put("status", "fail");
-
+            jsonObject.put("res", "failed");
         }
         return jsonObject;
     }
 
-    public JSONObject deleteRedem(@RequestParam String fundCode,
-                                  @RequestParam String clientId) {
+    public JSONObject deleteRedem(@RequestParam String serial) {
 
         JSONObject jsonObject = new JSONObject();
-        RedemResult redemResult = searchMapper.findRedem(fundCode, clientId);
-        if (redemResult.getRedemStatus().equals("申请中")) {
-            searchMapper.deleteRedem(fundCode, clientId);
-            jsonObject.put("status", "success");
+        Integer integer = searchMapper.deleteRedem(serial);
+        if (integer == 1) {
+            jsonObject.put("res", "success");
         } else {
-            jsonObject.put("status", "fail");
-
+            jsonObject.put("res", "failed");
         }
+
         return jsonObject;
+    }
+
+    public JSONObject bankTopup(@RequestParam String card,
+                                @RequestParam BigDecimal money){
+        JSONObject json = new JSONObject();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        StringBuffer buf = new StringBuffer();
+        String serial = format.format(calendar.getTime());
+        buf.append(serial);
+        buf.append("B");
+
+        Integer integer = searchMapper.insertBankSerial(buf.toString(), card, money);
+        searchMapper.updateBankSerial(buf.toString());
+
+        Integer integer2 = searchMapper.updateBank(card, money);
+        if (integer == 1 && integer2 == 1) {
+            json.put("res", "success");
+        } else {
+            json.put("res", "failed");
+        }
+
+
+        return json;
     }
 }

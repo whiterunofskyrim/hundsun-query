@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -30,9 +31,15 @@ public interface SearchMapper {
 
     PurchaseResult findPurchase(@Param("fundCode") String fundCode, @Param("clientId") String clientId);
 
-    void deletePurchase(@Param("fundCode") String fundCode, @Param("clientId") String clientId);
+    Integer deletePurchase(@Param("serial") String serial);
 
     RedemResult findRedem(@Param("fundCode") String fundCode, @Param("clientId") String clientId);
 
-    void deleteRedem(@Param("fundCode") String fundCode, @Param("clientId") String clientId);
+    Integer deleteRedem(@Param("serial") String serial);
+
+    Integer insertBankSerial(@Param("serial") String serial, @Param("card") String card, @Param("money")BigDecimal money);
+
+    void updateBankSerial(@Param("serial") String serial);
+
+    Integer updateBank(@Param("card") String card, @Param("money")BigDecimal money);
 }

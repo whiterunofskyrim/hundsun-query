@@ -117,8 +117,7 @@
     <delete id="deletePurchase">
         delete
         from purchase p
-        where p.fund_code = #{fundCode}
-          and p.client_id = #{clientId}
+        where p.purchase_id = #{serial}
     </delete>
 
     <select id="findRedem" resultType="com.example.businessearch.pojo.RedemResult">
@@ -147,7 +146,23 @@
     <delete id="deleteRedem">
         delete
         from redem r
-        where r.fund_code = #{fundCode}
-          and r.client_id = #{clientId}
+        where r.redem_id = #{serial}
     </delete>
+
+    <insert id="insertBankSerial">
+        insert into bank_jour(bank_jour_id, bank_account, bank_change)
+        values (#{serial}, #{card}, #{money})
+    </insert>
+
+    <update id="updateBankSerial">
+        update bank_jour
+        set bank_jour_id = (select concat(#{serial}, right (concat("000", id), 4)))
+        where bank_jour_id = #{serial}
+    </update>
+
+    <update id="updateBank">
+        update bank
+        set card_balance = card_balance + #{money}
+        where bank_account = #{card}
+    </update>
 </mapper>

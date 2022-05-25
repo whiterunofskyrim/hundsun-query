@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import net.sf.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,15 +56,24 @@ public class SearchController {
     public JSONObject deletePurchase(@RequestBody JSONObject json) {
         String fundCode = json.getString("fundCode");
         String clientId = json.getString("clientId");
-
-        return helloService.deletePurchase(fundCode, clientId);
+        String serial = json.getString("serial");
+        return helloService.deletePurchase(serial);
     }
 
     @RequestMapping(value = "delete/redem", produces = {"application/json;charset=UTF-8"})
     public JSONObject deleteRedem(@RequestBody JSONObject json) {
-        String fundCode = json.getString("fundCode");
-        String clientId = json.getString("clientId");
 
-        return helloService.deleteRedem(fundCode, clientId);
+        String serial = json.getString("serial");
+        return helloService.deleteRedem(serial);
+    }
+
+    //充值
+    @RequestMapping(value = "bank/topup", produces = {"application/json;charset=UTF-8"})
+    public JSONObject bankTopup(@RequestBody JSONObject json) {
+
+        String card = json.getString("bankAccount");
+        String numeric = json.getString("numeric");
+        BigDecimal money = new BigDecimal(numeric);
+        return helloService.bankTopup(card, money);
     }
 }
