@@ -54,8 +54,7 @@ public class SearchController {
 
     @RequestMapping(value = "delete/purchase", produces = {"application/json;charset=UTF-8"})
     public JSONObject deletePurchase(@RequestBody JSONObject json) {
-        String fundCode = json.getString("fundCode");
-        String clientId = json.getString("clientId");
+
         String serial = json.getString("serial");
         return helloService.deletePurchase(serial);
     }
