@@ -1,9 +1,6 @@
 package com.example.businessearch.Mapper;
 
-import com.example.businessearch.pojo.Bank;
-import com.example.businessearch.pojo.Client;
-import com.example.businessearch.pojo.PurchaseResult;
-import com.example.businessearch.pojo.RedemResult;
+import com.example.businessearch.pojo.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -32,6 +29,10 @@ public interface SearchMapper {
     PurchaseResult findPurchase(@Param("fundCode") String fundCode, @Param("clientId") String clientId);
 
     Integer deletePurchase(@Param("serial") String serial);
+
+    Integer withdrawBank(@Param("bankAccount") String bankAccount, @Param("money") BigDecimal money);
+
+    Purchase getPurchase(@Param("serial") String serial);
 
     RedemResult findRedem(@Param("fundCode") String fundCode, @Param("clientId") String clientId);
 

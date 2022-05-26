@@ -3,6 +3,7 @@ package com.example.businessearch.service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.businessearch.Mapper.SearchMapper;
 import com.example.businessearch.pojo.Bank;
+import com.example.businessearch.pojo.Purchase;
 import com.example.businessearch.pojo.PurchaseResult;
 import com.example.businessearch.pojo.RedemResult;
 import net.sf.json.JSONObject;
@@ -70,8 +71,14 @@ public class HelloService {
 
     public JSONObject deletePurchase(@RequestParam String serial) {
         JSONObject jsonObject = new JSONObject();
+
+        Purchase p = searchMapper.getPurchase(serial);
+//        System.out.println("1");
+//        System.out.println(p.toString());
+//        System.out.println("2");
+        Integer integer1 = searchMapper.withdrawBank(p.getBankAccount(), p.getPurchaseCount());
         Integer integer = searchMapper.deletePurchase(serial);
-        if (integer == 1) {
+        if (integer == 1 && integer1 == 1) {
             jsonObject.put("res", "success");
         } else {
             jsonObject.put("res", "failed");

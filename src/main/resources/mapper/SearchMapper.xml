@@ -120,6 +120,18 @@
         where p.purchase_id = #{serial}
     </delete>
 
+    <update id="withdrawBank">
+        update bank
+        set card_balance = card_balance + #{money}
+        where bank_account = #{bankAccount}
+    </update>
+
+    <select id="getPurchase" parameterType="String" resultType="com.example.businessearch.pojo.Purchase">
+        select *
+        from purchase p
+        where p.purchase_id = #{serial}
+    </select>
+
     <select id="findRedem" resultType="com.example.businessearch.pojo.RedemResult">
         select r.redem_id,
                r.client_id,

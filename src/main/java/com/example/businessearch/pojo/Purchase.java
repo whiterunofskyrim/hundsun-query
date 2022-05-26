@@ -76,4 +76,18 @@ public class Purchase {
     public void setPurchase_status(String purchaseStatus) {
         this.purchaseStatus = purchaseStatus;
     }
+
+    @Override
+    public String toString() {
+        return "Purchase{" +
+                "purchaseId='" + purchaseId + '\'' +
+                ", clientId='" + clientId + '\'' +
+                ", bankAccount='" + bankAccount + '\'' +
+                ", fundCode='" + fundCode + '\'' +
+                ", purchaseDate=" + purchaseDate +
+                ", purchaseCount=" + purchaseCount +
+                ", purchaseShare=" + purchaseShare +
+                ", purchaseStatus='" + purchaseStatus + '\'' +
+                '}';
+    }
 }
