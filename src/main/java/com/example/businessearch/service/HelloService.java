@@ -78,7 +78,19 @@ public class HelloService {
 //        System.out.println("2");
         Integer integer1 = searchMapper.withdrawBank(p.getBankAccount(), p.getPurchaseCount());
         Integer integer = searchMapper.deletePurchase(serial);
-        if (integer == 1 && integer1 == 1) {
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        StringBuffer buf = new StringBuffer();
+        String serialTwo = format.format(calendar.getTime());
+        buf.append(serialTwo);
+        buf.append("B");
+
+        Integer integer2 = searchMapper.insertBankSerial(buf.toString(), p.getBankAccount(), p.getPurchaseCount());
+        searchMapper.updateBankSerial(buf.toString());
+
+
+        if (integer == 1 && integer1 == 1 && integer2 == 1) {
             jsonObject.put("res", "success");
         } else {
             jsonObject.put("res", "failed");
